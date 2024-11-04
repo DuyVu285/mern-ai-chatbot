@@ -1,9 +1,10 @@
 import app from "./app.js";
 import { connectToDatabase } from "./db/connection.js";
 
+const PORT = process.env.PORT || 5000;
 connectToDatabase()
   .then(() => {
-    app.listen(5000, () => console.log("Server started on port 5000"));
+    app.listen(PORT, () => console.log("Server started and connected to MongoDB"));
   })
   .catch((error) => {
     console.log(error);
