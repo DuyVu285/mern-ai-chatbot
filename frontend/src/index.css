@@ -6,7 +6,7 @@ body {
   padding: 0;
   background: #05101c;
   color: white;
-  font-family: 'Roboto Slab', serif;
+  font-family: "Roboto Slab", serif;
 }
 
 .image-inverted {
@@ -24,3 +24,7 @@ body {
   letter-spacing: 1px;
 }
 
+.MuiOutlinedInput-input-root.Mui-focused,
+.MuiOutlinedInput-notchedOutline {
+  border-color: white !important;
+}

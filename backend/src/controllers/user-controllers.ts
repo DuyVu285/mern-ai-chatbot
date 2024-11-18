@@ -32,7 +32,6 @@ export const userSignup = async (
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
 
-    
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
       domain: "localhost",
@@ -50,8 +49,10 @@ export const userSignup = async (
       httpOnly: true,
       signed: true,
     });
-    
-    return res.status(200).json({ message: "OK", id: user._id.toString() });
+
+    return res
+      .status(200)
+      .json({ message: "OK", name: user.name, email: user.email });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Error", cause: error.message });
@@ -91,7 +92,9 @@ export const userLogin = async (
       signed: true,
     });
 
-    return res.status(200).json({ message: "OK", id: user._id.toString() });
+    return res
+      .status(200)
+      .json({ message: "OK", name: user.name, email: user.email });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Error", cause: error.message });
