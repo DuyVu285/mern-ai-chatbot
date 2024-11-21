@@ -34,7 +34,7 @@ export const userSignup = async (
 
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
-      domain: "localhost",
+      domain: "localhost", //set domain later
       signed: true,
       path: "/",
     });
@@ -72,7 +72,7 @@ export const userLogin = async (
 
     const isPasswordCorrect = await compare(password, user.password);
     if (!isPasswordCorrect)
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({ message: "Incorrect password" });
 
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
@@ -91,6 +91,31 @@ export const userLogin = async (
       httpOnly: true,
       signed: true,
     });
+
+    return res
+      .status(200)
+      .json({ message: "OK", name: user.name, email: user.email });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error", cause: error.message });
+  }
+};
+
+export const verifyUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await User.findById(res.locals.jwtData.id );
+    if (!user)
+      return res
+        .status(401)
+        .json({ message: "User Not Registered or Token Malfunctioned " });
+
+    if (user._id.toString() !== res.locals.jwtData.id) {
+      return res.status(401).json({ message: "Permission Didn't Match" });
+    }
 
     return res
       .status(200)

@@ -3,8 +3,6 @@ export const validate = (validations) => {
     return async (req, res, next) => {
         await Promise.all(validations.map((validation) => validation.run(req)));
         const errors = validationResult(req);
-        console.log("Request Body:", req.body); // Log request body
-        console.log("Validation Errors:", errors.array()); // Log errors
         if (errors.isEmpty()) {
             return next();
         }
@@ -25,5 +23,8 @@ export const loginValidator = [
         .trim()
         .isLength({ min: 6 })
         .withMessage("Password should contain at least 6 characters!"),
+];
+export const chatCompletionValidator = [
+    body("message").notEmpty().withMessage("Message is required!"),
 ];
 //# sourceMappingURL=validators.js.map
